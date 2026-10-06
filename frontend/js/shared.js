@@ -14,7 +14,7 @@ const shareToken = decodeURIComponent(window.location.pathname.split("/").pop())
 const commentsEl = document.getElementById("comments");
 const chatEl = document.getElementById("chat");
 const modal = document.getElementById("name-modal");
-const storageKey = `lexora-guest-${shareToken}`;
+const storageKey = `khojai-guest-${shareToken}`;
 
 const CHAT_SUGGESTIONS = [
   "What is this document about?",
@@ -59,7 +59,7 @@ async function loadChat() {
     const mine = message.role === "user";
     appendChatMessage(chatEl, {
       role: mine ? "user" : "assistant",
-      author: mine ? getGuestName() : "Lexora",
+      author: mine ? getGuestName() : "KhojAI",
       content: message.content,
     });
   }
@@ -95,7 +95,7 @@ setupChatComposer({
     appendChatMessage(chatEl, { role: "user", author: getGuestName(), content: query });
     const answerNode = appendChatMessage(chatEl, {
       role: "assistant",
-      author: "Lexora",
+      author: "KhojAI",
       content: "",
       streaming: true,
     });

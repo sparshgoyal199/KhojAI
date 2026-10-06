@@ -27,7 +27,7 @@ export function renderChatEmpty(container, suggestions = []) {
     <div class="chat-empty">
       <div class="chat-empty-icon">✦</div>
       <h4>Ask anything about this PDF</h4>
-      <p>Lexora reads the document and answers with grounded citations.</p>
+      <p>KhojAI reads the document and answers with grounded citations.</p>
       ${suggestions.length ? `<div class="chat-suggestions">${suggestions.map((text) => `<button type="button" class="chat-suggestion" data-text="${escapeAttr(text)}">${escapeHtml(text)}</button>`).join("")}</div>` : ""}
     </div>
   `;
@@ -49,7 +49,7 @@ export function appendChatMessage(container, { role, author, content, streaming 
 
   const avatar = document.createElement("div");
   avatar.className = "chat-avatar";
-  avatar.textContent = role === "user" ? author.slice(0, 1).toUpperCase() : "L";
+  avatar.textContent = role === "user" ? author.slice(0, 1).toUpperCase() : "K";
 
   const bubble = document.createElement("div");
   bubble.className = "chat-bubble";

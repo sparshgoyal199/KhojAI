@@ -1,6 +1,6 @@
-# Lexora — Grounded PDF Intelligence & Collaboration Platform
+# KhojAI — Grounded PDF Intelligence & Collaboration Platform
 
-Lexora is a secure, collaborative, Retrieval-Augmented Generation (RAG) platform. It allows users to upload PDF documents, automatically generate structured layouts and summaries using GPU-backed parsing, engage in grounded Q&A with real-time text streaming, and share interactive workspaces with guest collaborators (who can comment and chat without needing an account).
+KhojAI is a secure, collaborative, Retrieval-Augmented Generation (RAG) platform. It allows users to upload PDF documents, automatically generate structured layouts and summaries using GPU-backed parsing, engage in grounded Q&A with real-time text streaming, and share interactive workspaces with guest collaborators (who can comment and chat without needing an account).
 
 ---
 

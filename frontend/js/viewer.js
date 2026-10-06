@@ -35,7 +35,7 @@ async function loadPdf() {
   const pdf = await api.getPdf(pdfId);
   document.getElementById("filename").textContent = pdf.filename;
   document.getElementById("summary").textContent = pdf.summary || "No summary stored for this file.";
-  document.title = `${pdf.filename} — Lexora`;
+  document.title = `${pdf.filename} — KhojAI`;
   if (pdf.file_url) document.getElementById("pdf-frame").src = pdf.file_url;
 }
 
@@ -61,7 +61,7 @@ async function loadChat() {
   for (const message of history.messages) {
     appendChatMessage(chatEl, {
       role: message.role,
-      author: message.role === "user" ? "You" : "Lexora",
+      author: message.role === "user" ? "You" : "KhojAI",
       content: message.content,
     });
   }
@@ -80,7 +80,7 @@ setupChatComposer({
     appendChatMessage(chatEl, { role: "user", author: "You", content: query });
     const answerNode = appendChatMessage(chatEl, {
       role: "assistant",
-      author: "Lexora",
+      author: "KhojAI",
       content: "",
       streaming: true,
     });

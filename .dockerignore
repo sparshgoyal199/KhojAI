@@ -1,5 +1,5 @@
 # ==============================================================================
-# Lexora — .dockerignore
+# KhojAI — .dockerignore
 # Exclude dev artifacts, secrets, and files not needed inside the image.
 # backend/ and frontend/ source ARE required and must not be over-ignored.
 # ==============================================================================
