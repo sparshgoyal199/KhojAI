@@ -18,7 +18,7 @@ class UserOut(BaseModel):
     created_at: datetime
 
     class Config:
-        from_attributes = True   # SQLAlchemy object ko directly is shape mein convert karne deta hai
+        from_attributes = True   
 
 class TokenResponse(BaseModel):
     access_token: str

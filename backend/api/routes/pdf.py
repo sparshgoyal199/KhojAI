@@ -36,14 +36,5 @@ async def search_pdfs(
 
 @pdf_router.get("/{pdf_id}", response_model=PdfDetail)
 async def view_my_pdf(pdf_id: str, current_user: dict = Depends(get_current_user)):
-    print(pdf_id)
-    #pdf_id = make_pdf_id_to_str(pdf_id)
-    print(pdf_id)
+    pdf_id = make_pdf_id_to_str(pdf_id)
     return await get_pdf_detail_for_owner(pdf_id, current_user["id"])
-
-
-
-
-
-
-

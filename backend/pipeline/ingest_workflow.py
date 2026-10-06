@@ -64,25 +64,20 @@ async def vector_storing(state: IngestionState):
 
 def get_summarised_chunks(state: IngestionState):
     total_vectors = len(state["embedded_chunks"])
-
-    print("Total vectors: ", total_vectors, "\n")
     if total_vectors == 0:
         return {"summary_chunks": []}
     
     embedded_chunks = np.array(state["embedded_chunks"])
     summary_chunks = k_means_summarised_chunks(total_vectors=total_vectors, embedded_chunks=embedded_chunks, chunks_payload=state["chunks_payload"])
-    print("summary chunks: ",summary_chunks, "\n")
     return {"summary_chunks": summary_chunks}
 
 def generate_summarize_prompt(state: IngestionState):
-    summary_prompt = creating_user_prompt(state["summary_chunks"], query="Summarize the above context")
-    print("summary_prompt: ", summary_prompt, "\n")
+    summary_prompt = creating_user_prompt(state["summary_chunks"], query="Summarize the above context", messages=None)
     return {"summary_prompt": summary_prompt}
 
 async def generating_summary_response(state: IngestionState):
     messages = [SystemMessage(content=summary_system_prompt), HumanMessage(content=state["summary_prompt"])]
     response = await response_generator(messages)
-    print("response: ", response, "\n")
     return {"summary": response.content}
 
 async def file_upload(state: IngestionState):

@@ -5,11 +5,14 @@ from core.llm import groq_client, llm
 import json
 
 def prompt_formatter(query: str, 
-                     formatted_chunks: str) -> str:
+                     formatted_chunks: str, history_text: str | None) -> str:
 
     user_prompt = f"""
         Context:
         {formatted_chunks}
+
+        Past conversation:
+        {history_text}
 
         Question:
         {query}
@@ -26,6 +29,11 @@ def format_retrieved_chunks(relevant_chunks_payload: list[dict]) -> str:
         formatted_chunks += f"filename: {chunk['filename']}\n\n"
     return formatted_chunks
 
+def get_past_messages(messages: list):
+    history_text = "\n".join(
+        f"{msg.type}: {msg.content}" for msg in messages
+    )
+    return history_text
 
 async def retrieve__llm_response(messages: list) -> StreamingResponse:
     response = await llm.ainvoke(messages)
@@ -56,9 +64,12 @@ async def retrieve_relevant_chunks(pdf_id: str, embedded_query: list[float], ori
         })
     return result_payload
 
-def creating_user_prompt(relevant_chunks_payload, query):
+def creating_user_prompt(relevant_chunks_payload, query, messages):
     formatted_chunks = format_retrieved_chunks(relevant_chunks_payload)
-    prompt = prompt_formatter(query, formatted_chunks)
+    history_text=None
+    if messages:
+        history_text = get_past_messages(messages)
+    prompt = prompt_formatter(query, formatted_chunks, history_text)
     return prompt
 
 async def response_generator(messages: list):

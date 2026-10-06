@@ -16,16 +16,10 @@ class retrievalState(TypedDict):
     query: str
     embedded_query: list
     relevant_chunks_payload: list[dict]
-    # user_prompt: str
+    user_prompt: str
     #response: str
 
 retrieve_garph = StateGraph(retrievalState)
-
-def appending_system_message(state: retrievalState):
-    messages = state['messages']
-    if not messages or not isinstance(messages[0], SystemMessage):
-        messages = [SystemMessage(content=system_prompt)] + messages
-    return {"messages": messages}
 
 async def embeddings_generation(state: retrievalState):
     embedded_query = await generate_embeddings(query=state["query"],chunks=None)
@@ -36,22 +30,19 @@ async def retrieving_chunks(state: retrievalState):
     return {"relevant_chunks_payload": relevant_chunks_payload}
 
 def prompt_formatting(state: retrievalState):
-    user_prompt = creating_user_prompt(state["relevant_chunks_payload"], state["query"])
-    return {"messages": [HumanMessage(content=user_prompt)]}
+    user_prompt = creating_user_prompt(state["relevant_chunks_payload"], state["query"], state["messages"])
+    return {"user_prompt": user_prompt, "messages": HumanMessage(content=state["query"])}
 
 async def generating_response(state: retrievalState):
-    response = await response_generator(state["messages"])
-    print(state["messages"])
+    response = await response_generator([SystemMessage(content=system_prompt), HumanMessage(content=state["user_prompt"])])
     return {"messages": [response]}
 
-retrieve_garph.add_node("appending_system_message", appending_system_message)
 retrieve_garph.add_node("embeddings_generation", embeddings_generation)
 retrieve_garph.add_node("retrieving_chunks", retrieving_chunks)
 retrieve_garph.add_node("prompt_formatting", prompt_formatting)
 retrieve_garph.add_node("generating_response", generating_response)
 
-retrieve_garph.add_edge(START, "appending_system_message")
-retrieve_garph.add_edge("appending_system_message", "embeddings_generation")
+retrieve_garph.add_edge(START, "embeddings_generation")
 retrieve_garph.add_edge("embeddings_generation", "retrieving_chunks")
 retrieve_garph.add_edge("retrieving_chunks", "prompt_formatting")
 retrieve_garph.add_edge("prompt_formatting", "generating_response")

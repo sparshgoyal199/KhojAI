@@ -48,7 +48,7 @@ async def get_pdfs_for_user(user_id: str) -> list[dict]:
 async def _get_file_signed_url(storage_path: str) -> Optional[str]:
     if not storage_path:
         return None
-    result = await core_db.supabase_client.storage.from_("pdfs").create_signed_url(storage_path, 3600)
+    result = await core_db.supabase_client.storage.from_("pdfs").create_signed_url(storage_path, 3600) #1 hour
     return result.get("signedURL") or result.get("signed_url")
 
 

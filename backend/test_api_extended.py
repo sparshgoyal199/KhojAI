@@ -7,7 +7,7 @@ from pathlib import Path
 import httpx
 
 BASE = "http://127.0.0.1:8000"
-PDF = Path(r"C:\Users\hp\AppData\Local\Temp\lexora_test.pdf")
+PDF = Path(r"C:\Users\hp\AppData\Local\Temp\khojai_test.pdf")
 EMAIL = "fulltest.user@gmail.com"
 PASSWORD = "TestPass123!"
 

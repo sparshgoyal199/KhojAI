@@ -82,7 +82,7 @@ async def main():
         # Minimal valid PDF bytes
         minimal_pdf = (
             b"%PDF-1.1\n1 0 obj<<>>endobj\n2 0 obj<</Length 44>>stream\n"
-            b"BT /F1 12 Tf 100 700 Td (Hello Lexora test) Tj ET\n"
+            b"BT /F1 12 Tf 100 700 Td (Hello KhojAI test) Tj ET\n"
             b"endstream\nendobj\n3 0 obj<</Type/Page/Parent 4 0 R/MediaBox[0 0 612 792]/Contents 2 0 R>>endobj\n"
             b"4 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n"
             b"5 0 obj<</Type/Catalog/Pages 4 0 R>>endobj\n"

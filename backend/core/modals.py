@@ -111,7 +111,7 @@ class ParsingEmbeddingModel:
         docling_input_obj = DocumentStream(name=filename, stream=file_stream)
         structured_doc = self.docling_obj.convert(docling_input_obj)
         return {"docling_document":structured_doc.document.export_to_dict()}
-
+    
     @modal.method()
     def embed_chunks(self, chunks: list[dict]) -> list[list[float]]:
         return self._encode_chunks(chunks)
