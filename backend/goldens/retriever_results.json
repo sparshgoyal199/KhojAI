@@ -1,0 +1,74 @@
+[
+  {
+    "query": "What is machine learning and why is it needed?",
+    "score": 0.45,
+    "passed": false,
+    "reason": "The score is 0.45 because the first node (rank 1) is irrelevant – it only talks about experimental planning, as noted in the reason \"The first document only discusses experimental planning and steps, without defining machine learning or explaining why it is needed.\" Likewise, the third (rank 3) and fourth (rank 4) nodes are irrelevant, offering book titles and experiment design respectively. These irrelevant nodes appear before and between the relevant nodes at rank 2 and rank 5, preventing a higher precision ranking.",
+    "judge_model": "openai/gpt-oss-120b",
+    "error": null
+  },
+  {
+    "query": "What is the Vapnik-Chervonenkis (VC) dimension and how does it measure the capacity of a hypothesis class?",
+    "score": 1.0,
+    "passed": true,
+    "reason": "The score is 1.00 because the first two nodes (rank 1 and 2) are relevant, while the irrelevant nodes appear later (ranks 3‑5), so relevant content is perfectly prioritized.",
+    "judge_model": "openai/gpt-oss-120b",
+    "error": null
+  },
+  {
+    "query": "Explain Bayes' rule and how it is used in classification.",
+    "score": 1.0,
+    "passed": true,
+    "reason": "The score is 1.00 because all five retrieval nodes are highly relevant to the input, covering the definition, components, and application of Bayes' rule in classification. Since there are no irrelevant nodes to rank lower, the precision is perfect.",
+    "judge_model": "qwen/qwen3.8-27b",
+    "error": null
+  },
+  {
+    "query": "What is Maximum Likelihood Estimation (MLE) and how are the parameters of a distribution estimated using it?",
+    "score": 1.0,
+    "passed": true,
+    "reason": "The score is 1.00 because all relevant nodes are ranked higher than the irrelevant node. The first four nodes directly address MLE and parameter estimation, while the fifth node, which discusses 'sample correlation coefficients and a correlation matrix', is correctly ranked last as it is unrelated to the input.",
+    "judge_model": "qwen/qwen3.8-27b",
+    "error": null
+  },
+  {
+    "query": "Explain Principal Component Analysis (PCA) and how it is used for dimensionality reduction.",
+    "score": 0.8041666666666667,
+    "passed": true,
+    "reason": "The score is 0.80 because the second node is irrelevant, focusing on 'Kernel PCA' and 'nonlinear extensions' which are not part of the expected output, while the other four nodes are relevant and correctly ranked. The presence of this irrelevant node at rank 2 prevents a perfect score, but the high concentration of relevant nodes at ranks 1, 3, 4, and 5 keeps the precision high.",
+    "judge_model": "qwen/qwen3.8-27b",
+    "error": null
+  },
+  {
+    "query": "Describe the k-means clustering algorithm and what it minimizes.",
+    "score": 1.0,
+    "passed": true,
+    "reason": "The score is 1.00 because all nodes in the retrieval contexts are relevant, and there are no irrelevant nodes to rank lower.",
+    "judge_model": "openai/gpt-oss-20b",
+    "error": null
+  },
+  {
+    "query": "What is the backpropagation algorithm in multilayer perceptrons?",
+    "score": 1.0,
+    "passed": true,
+    "reason": "The score is 1.00 because the first two nodes (rank 1 and 2) are clearly relevant, while the later nodes (ranks 3‑5) are irrelevant, so all relevant items are ranked above the irrelevant ones. No higher score is possible.",
+    "judge_model": "openai/gpt-oss-120b",
+    "error": null
+  },
+  {
+    "query": "What is a Support Vector Machine (SVM) and what is the kernel trick?",
+    "score": 1.0,
+    "passed": true,
+    "reason": "The score is 1.00 because all five retrieval nodes are highly relevant to the input, covering both the definition of SVMs and the kernel trick. The first node discusses 'kernel machines' and 'support vectors', the second describes SVMs as a 'popular convex learning algorithm', the third explicitly explains the 'kernel trick', the fourth covers 'mapping to a new feature space', and the fifth outlines why SVMs are popular. Since every node provides direct and useful information without any irrelevant entries, the ranking is perfect.",
+    "judge_model": "qwen/qwen3.8-27b",
+    "error": null
+  },
+  {
+    "query": "Describe Hidden Markov Models (HMMs) and the three basic problems associated with them.",
+    "score": 0.5,
+    "passed": false,
+    "reason": "The score is 0.50 because the first node (rank 1) is irrelevant—its reason notes only a table of contents without concrete definitions—so an irrelevant node outranks the relevant node at rank 2, which does list the three problems. Additional irrelevant nodes at ranks 3‑5 further dilute the ranking, preventing a higher precision score.",
+    "judge_model": "openai/gpt-oss-120b",
+    "error": null
+  }
+]

@@ -14,4 +14,4 @@ async def get_current_user(authorization: str = Header(...)) -> dict:
     if not result.data:
         raise HTTPException(status_code=401, detail="User not found")
 
-    return result.data[0]   # dictionary — current_user["id"], current_user["name"] wagera
+    return result.data[0]  

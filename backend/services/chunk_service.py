@@ -78,7 +78,7 @@ def k_means_summarised_chunks(total_vectors: int, embedded_chunks: list[list], c
     for cluster_id in range(n_summary_chunks):
         cluster_center = kmeans.cluster_centers_[cluster_id]
         cluster_points_idx = np.where(kmeans.labels_ == cluster_id)[0] # global indices of this cluster's points
-        dists = np.linalg.norm(embedded_chunks[cluster_points_idx] - cluster_center, axis=1) # distances of those 4 points to centroid
+        dists = np.linalg.norm(embedded_chunks[cluster_points_idx] - cluster_center, axis=1) # distances of those cluster_id points to centroid
         closest_idx = cluster_points_idx[np.argmin(dists)]
         summary_chunks.append(chunks_payload[closest_idx])
     return summary_chunks

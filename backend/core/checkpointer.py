@@ -20,7 +20,7 @@ def run_checkpointer_migrations():
 async def init_checkpointer():
     """Ye sirf lifespan ke andar call hoga, jab event loop already chal raha hoga."""
     global checkpointer
-    await pool.open()
+    await pool.open()   
     checkpointer = AsyncPostgresSaver(pool)
     await checkpointer.setup()   # async version ka setup — tables migrate karega
     return checkpointer

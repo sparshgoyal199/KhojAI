@@ -1,0 +1,49 @@
+[
+  {
+    "id": "q01",
+    "query": "What is machine learning and why is it needed?",
+    "ideal_answer": "Machine learning is programming computers to optimize a performance criterion using example data or past experience. We have a model defined up to some parameters, and learning is the execution of a computer program to optimize the parameters of the model using training data or past experience. It is needed when we do not have an algorithm for a task but have lots of data, such as telling spam emails from legitimate ones or predicting customer behavior. We may not be able to identify the complete process, but we can construct a good and useful approximation by detecting patterns or regularities in the data."
+  },
+  {
+    "id": "q02",
+    "query": "What is the Vapnik-Chervonenkis (VC) dimension and how does it measure the capacity of a hypothesis class?",
+    "ideal_answer": "Given N data points that can be labeled in 2^N ways, if for any of these labelings we can find a hypothesis h in H that separates positive from negative examples, we say H shatters N points. The maximum number of points that can be shattered by H is called the Vapnik-Chervonenkis (VC) dimension of H, denoted VC(H), and it measures the capacity of the hypothesis class. For example, an axis-aligned rectangle in two dimensions can shatter four points, so its VC dimension is four."
+  },
+  {
+    "id": "q03",
+    "query": "Explain Bayes' rule and how it is used in classification.",
+    "ideal_answer": "Bayes' rule is used to calculate the posterior probability of a class given the observed input: P(C|x) = P(C)p(x|C) / p(x). Here P(C) is the prior probability of the class, p(x|C) is the class likelihood (the probability of seeing x given the class), and p(x) is the evidence (the marginal probability of x). For minimum error, the Bayes' classifier chooses the class with the highest posterior probability. With 0/1 loss, this minimizes the probability of misclassification."
+  },
+  {
+    "id": "q04",
+    "query": "What is Maximum Likelihood Estimation (MLE) and how are the parameters of a distribution estimated using it?",
+    "ideal_answer": "In maximum likelihood estimation, we assume the sample is drawn from a known probability density family p(x|theta) defined up to parameters theta. We want to find theta that makes sampling the observed instances as likely as possible. Because instances are iid, the likelihood is the product of individual likelihoods, and we maximize the log likelihood (the sum of log probabilities) to simplify the product into a sum. For example, for a Bernoulli distribution the MLE of p is the ratio of the number of occurrences of the event to the number of experiments, and for a Gaussian the MLE of the mean is the sample average."
+  },
+  {
+    "id": "q05",
+    "query": "Explain Principal Component Analysis (PCA) and how it is used for dimensionality reduction.",
+    "ideal_answer": "PCA is an unsupervised linear projection method for dimensionality reduction. It finds directions (principal components) such that when the data is projected onto them, the variance of the projected data is maximized. The first principal component is the eigenvector of the covariance matrix with the largest eigenvalue, and the second is the eigenvector with the second largest eigenvalue, orthogonal to the first. We can reduce dimensionality by keeping only the k leading components that explain most of the variance, for example, 90 percent. PCA also minimizes the reconstruction error among all orthogonal linear projections and is sensitive to outliers."
+  },
+  {
+    "id": "q06",
+    "query": "Describe the k-means clustering algorithm and what it minimizes.",
+    "ideal_answer": "k-means is an iterative clustering algorithm that aims to minimize the total reconstruction error, which is the sum over all instances of the squared distance to their closest center. We start with k initial centers, typically randomly chosen instances. At each iteration, we first assign each instance to the closest center (this is the E-step, producing hard 0/1 labels), and then we recalculate each center as the mean of all instances assigned to it (this is the M-step). These two steps are repeated until the centers stabilize. k-means is a special case of the EM algorithm for Gaussian mixtures where covariances are assumed equal and shared and labels are hardened."
+  },
+  {
+    "id": "q07",
+    "query": "What is the backpropagation algorithm in multilayer perceptrons?",
+    "ideal_answer": "Backpropagation is a gradient descent method for training multilayer perceptrons. The output error is propagated back through the network using the chain rule to calculate the gradient of the error with respect to each weight. In the second layer, the weights are updated using the standard perceptron rule because the hidden units are treated as inputs. In the first layer, there is no desired output for the hidden units, so the error term is backpropagated: (r - y) is weighted by the second-layer weight v_h to give the error for hidden unit h, and this is multiplied by the derivative of the sigmoid z_h(1 - z_h) and the input x_j. The weights are then updated in the opposite direction of the gradient."
+  },
+  {
+    "id": "q08",
+    "query": "What is a Support Vector Machine (SVM) and what is the kernel trick?",
+    "ideal_answer": "A Support Vector Machine is a maximum margin classifier. For two classes with labels -1/+1, it finds the optimal separating hyperplane by minimizing (1/2)||w||^2 subject to r^t(w^T x^t + w0) >= 1, which maximizes the margin between the classes. The solution can be written as a weighted sum of a subset of training instances called support vectors. The kernel trick replaces the inner product of basis functions phi(x^t)^T phi(x^s) with a kernel function K(x^t, x^s) computed directly in the original input space, so we never need to explicitly map to the high-dimensional feature space. This allows nonlinear classification using linear optimization, and application-specific kernels can be defined to code prior knowledge."
+  },
+  {
+    "id": "q09",
+    "query": "Describe Hidden Markov Models (HMMs) and the three basic problems associated with them.",
+    "ideal_answer": "A Hidden Markov Model is a model for sequences where the states are hidden and each state generates an observation with some probability. An HMM has N states, M observation symbols, state transition probabilities A (where a_ij is the probability of moving from state i to state j), observation probabilities B (where b_j(m) is the probability of observing symbol m in state j), and initial state probabilities Pi. The three basic problems are: (1) evaluating the probability of an observation sequence, solved by the forward-backward procedure in O(N^2 T); (2) finding the most likely state sequence, solved by the Viterbi algorithm using dynamic programming; and (3) learning the model parameters from data, solved by the Baum-Welch algorithm, which is an EM procedure."
+  }
+]
+
+  
