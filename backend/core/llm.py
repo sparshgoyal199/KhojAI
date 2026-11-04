@@ -20,6 +20,6 @@ llm = ChatGroq(
 from langchain_mistralai import ChatMistralAI
 
 # llm = ChatMistralAI(
-#     model="mistral-large-latest",
+#     model="mistral-large-2512",
 #     temperature=0
 # )
