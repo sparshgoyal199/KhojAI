@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>KhojAI — Operational Evaluations Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --green: #238636;
+      --green-light: #3fb950;
+      --red: #da3633;
+      --red-light: #f85149;
+      --blue: #58a6ff;
+      --neutral: #8b949e;
+      --changed-bg: rgba(218, 54, 51, 0.15);
+      --changed-border: #f85149;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 32px 24px; }
+    .container { max-width: 1300px; margin: 0 auto; }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+    header h1 { font-size: 24px; font-weight: 600; }
+    .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+    
+    .btn { padding: 8px 16px; background: #238636; border: none; border-radius: 6px; color: #fff; font-weight: 600; cursor: pointer; }
+    .btn-secondary { background: #21262d; border: 1px solid var(--border); margin-right: 8px; color: #fff; }
+
+    /* Mode Banner */
+    .mode-banner { padding: 10px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; font-weight: 500; }
+    .mode-baseline { background: rgba(88, 166, 255, 0.15); border: 1px solid var(--blue); color: var(--blue); }
+    .mode-candidate { background: rgba(63, 185, 80, 0.15); border: 1px solid var(--green); color: var(--green-light); }
+
+    /* Side-by-Side Config Diff */
+    .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .config-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+    .config-card h3 { font-size: 15px; margin-bottom: 12px; color: var(--blue); }
+    .config-item { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 4px; }
+    .config-item.is-changed { background: var(--changed-bg); border: 1px solid var(--changed-border); font-weight: 600; color: #fff; }
+    .config-item span:first-child { color: var(--text-muted); }
+
+    /* KPI Cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+    .kpi-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .kpi-val { font-size: 28px; font-weight: 700; margin: 8px 0; }
+    .kpi-sub { font-size: 12px; color: var(--text-muted); }
+    .badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-top: 6px; }
+    .badge-improved { background: rgba(46,160,67,0.2); color: var(--green-light); border: 1px solid var(--green); }
+    .badge-regressed { background: rgba(248,81,73,0.2); color: var(--red-light); border: 1px solid var(--red); }
+    .badge-noise { background: rgba(110,118,129,0.2); color: var(--text-muted); border: 1px solid var(--neutral); }
+
+    /* Tables & Charts */
+    .section-title { font-size: 18px; margin: 28px 0 16px 0; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 32px; }
+    th, td { padding: 12px 16px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border); }
+    th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; }
+    .chart-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 28px; height: 360px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>KhojAI — Operational Evaluations Dashboard</h1>
+      <div class="subtitle" id="subHeader">Loading benchmark data...</div>
+    </div>
+    <div>
+      <input type="file" id="fileInput" style="display:none" accept=".json" onchange="handleFileSelect(event)">
+      <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">Upload baseline.json or candidate.json</button>
+      <button class="btn" onclick="autoLoad()">Auto-Fetch</button>
+    </div>
+  </header>
+
+  <div id="modeBanner" class="mode-banner mode-baseline" style="display:none;"></div>
+
+  <!-- Side-by-Side Configuration Specs -->
+  <div class="config-grid" id="configGrid">
+    <div class="config-card">
+      <h3 id="baseConfigName">Baseline Configuration</h3>
+      <div id="baseConfigList"></div>
+    </div>
+    <div class="config-card" id="candConfigCard">
+      <h3 id="candConfigName">Candidate Configuration</h3>
+      <div id="candConfigList"></div>
+    </div>
+  </div>
+
+  <!-- KPI Grid -->
+  <div class="kpi-grid" id="kpiContainer"></div>
+
+  <!-- Noise Band Visualizer Chart -->
+  <div class="section-title" id="chartTitle">Latency Metrics & Calibrated Noise Bands (2σ Confidence Zone)</div>
+  <div class="chart-container">
+    <canvas id="noiseChart"></canvas>
+  </div>
+
+  <!-- Detailed Metric Table -->
+  <div class="section-title" id="tableTitle">Metrics Breakdown & Statistics</div>
+  <table>
+    <thead id="tableHead"></thead>
+    <tbody id="metricTableBody"></tbody>
+  </table>
+</div>
+
+<script>
+async function autoLoad() {
+  // First try candidate.json, if not present fall back to baseline.json
+  try {
+    const resCand = await fetch("../goldens/candidate.json");
+    if (resCand.ok) {
+      const data = await resCand.json();
+      renderCandidateView(data);
+      return;
+    }
+  } catch(e) {}
+
+  try {
+    const resBase = await fetch("../goldens/baseline.json");
+    if (resBase.ok) {
+      const data = await resBase.json();
+      renderBaselineView(data);
+      return;
+    }
+  } catch(e) {}
+
+  alert("Could not auto-fetch from ../goldens/. Please click 'Upload baseline.json or candidate.json' button to select it manually.");
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    try {
+      const data = JSON.parse(evt.target.result);
+      if (data.comparison) {
+        renderCandidateView(data);
+      } else if (data.metrics) {
+        renderBaselineView(data);
+      } else {
+        alert("Unrecognized JSON format. Please upload baseline.json or candidate.json.");
+      }
+    } catch {
+      alert("Invalid JSON file selected.");
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ── 1. BASELINE INSPECTION VIEW ─────────────────────────────────────────────
+function renderBaselineView(data) {
+  const meta = data.metadata;
+  const metrics = data.metrics;
+
+  const banner = document.getElementById("modeBanner");
+  banner.style.display = "block";
+  banner.className = "mode-banner mode-baseline";
+  banner.innerHTML = `📌 <strong>Baseline Inspection Mode</strong>: Displaying calibrated baseline standards and noise thresholds for <strong>${meta.config_name}</strong> across <strong>${data.calibration_runs} runs</strong>.`;
+
+  document.getElementById("subHeader").textContent = `Baseline: '${meta.config_name}' | ${data.calibration_runs} calibration runs | ${data.golden_count} items`;
+
+  // Hide candidate card
+  document.getElementById("candConfigCard").style.display = "none";
+  document.getElementById("configGrid").style.gridTemplateColumns = "1fr";
+
+  document.getElementById("baseConfigName").textContent = `System Configuration (${meta.config_name})`;
+  const bList = document.getElementById("baseConfigList");
+  bList.innerHTML = Object.entries(meta.components || {}).map(([k, v]) => `
+    <div class="config-item"><span>${k.replace(/_/g, ' ')}</span><span>${v}</span></div>
+  `).join("");
+
+  // KPIs
+  const kpis = [
+    { key: "e2e_p95", title: "E2E Latency P95", unit: "s" },
+    { key: "ttft_p95", title: "TTFT P95", unit: "s" },
+    { key: "tokens_per_sec_mean", title: "Throughput", unit: " tok/s" },
+    { key: "cost_usd_mean", title: "Avg Cost", unit: "$", isCost: true },
+    { key: "sla_pass_rate", title: "SLA Pass Rate", unit: "%" },
+  ];
+
+  const kpiEl = document.getElementById("kpiContainer");
+  kpiEl.innerHTML = kpis.map(k => {
+    const item = metrics[k.key] || { mean: 0, std_dev: 0, cv_percent: 0, noise_threshold: 0 };
+    const valStr = k.isCost ? `$${item.mean.toFixed(5)}` : `${item.mean.toFixed(2)}${k.unit}`;
+    return `
+      <div class="kpi-card">
+        <div class="kpi-title">${k.title}</div>
+        <div class="kpi-val">${valStr}</div>
+        <div class="kpi-sub">Jitter: ±${item.std_dev.toFixed(3)} (CV: ${item.cv_percent}%)</div>
+        <div class="badge badge-noise">Noise Band: ±${item.noise_threshold.toFixed(k.isCost ? 5 : 2)}</div>
+      </div>
+    `;
+  }).join("");
+
+  // Table
+  document.getElementById("tableHead").innerHTML = `
+    <tr>
+      <th>Metric Name</th>
+      <th>Baseline Mean (μ)</th>
+      <th>StdDev (σ)</th>
+      <th>Jitter (CV %)</th>
+      <th>Noise Threshold (±2σ)</th>
+      <th>Noise Band Range</th>
+      <th>5 Raw Runs</th>
+    </tr>
+  `;
+  const tbody = document.getElementById("metricTableBody");
+  tbody.innerHTML = Object.entries(metrics).map(([name, item]) => `
+    <tr>
+      <td><strong>${name}</strong></td>
+      <td>${item.mean}</td>
+      <td>${item.std_dev}</td>
+      <td>${item.cv_percent}%</td>
+      <td>±${item.noise_threshold}</td>
+      <td>[${item.noise_band_low} to ${item.noise_band_high}]</td>
+      <td style="color:var(--text-muted);font-size:11px;">${(item.raw_runs || []).join(', ')}</td>
+    </tr>
+  `).join("");
+
+  // Chart
+  renderBaselineChart(metrics);
+}
+
+function renderBaselineChart(metrics) {
+  const ctx = document.getElementById('noiseChart').getContext('2d');
+  const metricKeys = ['embedding_p95', 'search_p95', 'ttft_p95', 'generation_p95', 'e2e_p95'];
+  const labels = ['Modal Embedding', 'Qdrant Search', 'TTFT (Prefill)', 'LLM Decode', 'E2E Latency'];
+  
+  const means = metricKeys.map(k => metrics[k]?.mean || 0);
+  const bandHigh = metricKeys.map(k => metrics[k]?.noise_band_high || 0);
+  const bandLow = metricKeys.map(k => metrics[k]?.noise_band_low || 0);
+
+  if (window.myChart) window.myChart.destroy();
+  window.myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Baseline Mean (μ)',
+          data: means,
+          backgroundColor: '#58a6ff',
+          borderRadius: 4
+        },
+        {
+          label: 'Noise Band High (+2σ)',
+          data: bandHigh,
+          borderColor: '#f85149',
+          borderDash: [5, 5],
+          type: 'line',
+          fill: false,
+          pointRadius: 4
+        },
+        {
+          label: 'Noise Band Low (-2σ)',
+          data: bandLow,
+          borderColor: '#3fb950',
+          borderDash: [5, 5],
+          type: 'line',
+          fill: false,
+          pointRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { title: { display: true, text: 'Seconds' }, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        x: { grid: { display: false }, ticks: { color: '#e6edf3' } }
+      },
+      plugins: {
+        legend: { labels: { color: '#e6edf3' } }
+      }
+    }
+  });
+}
+
+// ── 2. CANDIDATE COMPARISON VIEW ───────────────────────────────────────────
+function renderCandidateView(data) {
+  const comp = data.comparison;
+  const meta = data.metadata;
+  const baseRef = data.baseline_referenced;
+  const diffs = data.config_diff || {};
+
+  const banner = document.getElementById("modeBanner");
+  banner.style.display = "block";
+  banner.className = "mode-banner mode-candidate";
+  banner.innerHTML = `⚔️ <strong>Candidate Comparison Mode</strong>: Comparing candidate <strong>'${meta.config_name}'</strong> against baseline <strong>'${baseRef.config_name}'</strong> across 2-sigma noise bands.`;
+
+  document.getElementById("subHeader").textContent = `Candidate: '${meta.config_name}' (${data.runs_evaluated || 1} runs) vs Baseline: '${baseRef.config_name}'`;
+
+  document.getElementById("candConfigCard").style.display = "block";
+  document.getElementById("configGrid").style.gridTemplateColumns = "1fr 1fr";
+  document.getElementById("candConfigName").textContent = `Candidate: ${meta.config_name}`;
+  document.getElementById("baseConfigName").textContent = `Baseline: ${baseRef.config_name}`;
+
+  const cList = document.getElementById("candConfigList");
+  const bList = document.getElementById("baseConfigList");
+
+  bList.innerHTML = Object.entries(baseRef.components || {}).map(([k, v]) => `
+    <div class="config-item"><span>${k.replace(/_/g, ' ')}</span><span>${v}</span></div>
+  `).join("");
+
+  cList.innerHTML = Object.entries(meta.components || {}).map(([k, v]) => {
+    const isChanged = diffs[k]?.changed;
+    const badgeStr = isChanged ? `<span style="color:var(--red-light);margin-left:8px;">[CHANGED]</span>` : "";
+    return `
+      <div class="config-item ${isChanged ? 'is-changed' : ''}">
+        <span>${k.replace(/_/g, ' ')}</span>
+        <span>${v} ${badgeStr}</span>
+      </div>
+    `;
+  }).join("");
+
+  const kpis = [
+    { key: "e2e_p95", title: "E2E Latency P95", unit: "s" },
+    { key: "ttft_p95", title: "TTFT P95", unit: "s" },
+    { key: "tokens_per_sec_mean", title: "Throughput", unit: " tok/s" },
+    { key: "cost_usd_mean", title: "Avg Cost", unit: "$", isCost: true },
+    { key: "sla_pass_rate", title: "SLA Pass Rate", unit: "%" },
+  ];
+
+  const kpiEl = document.getElementById("kpiContainer");
+  kpiEl.innerHTML = kpis.map(k => {
+    const item = comp[k.key] || { candidate: 0, delta: 0, pct_delta: 0, verdict: "NOISE" };
+    const badgeClass = item.verdict === "IMPROVED" ? "badge-improved" : (item.verdict === "REGRESSED" ? "badge-regressed" : "badge-noise");
+    const valStr = k.isCost ? `$${item.candidate.toFixed(5)}` : `${item.candidate.toFixed(2)}${k.unit}`;
+    const baseStr = k.isCost ? `$${item.baseline_mean.toFixed(5)}` : `${item.baseline_mean.toFixed(2)}${k.unit}`;
+    return `
+      <div class="kpi-card">
+        <div class="kpi-title">${k.title}</div>
+        <div class="kpi-val">${valStr}</div>
+        <div class="kpi-sub">Baseline: ${baseStr}</div>
+        <div class="badge ${badgeClass}">${item.verdict_icon || ''} ${item.verdict} (${item.pct_delta > 0 ? '+' : ''}${item.pct_delta}%)</div>
+      </div>
+    `;
+  }).join("");
+
+  document.getElementById("tableHead").innerHTML = `
+    <tr>
+      <th>Metric Name</th>
+      <th>Candidate</th>
+      <th>Baseline Mean</th>
+      <th>Delta (Δ)</th>
+      <th>% Change</th>
+      <th>Noise Threshold (±2σ)</th>
+      <th>Verdict</th>
+    </tr>
+  `;
+  const tbody = document.getElementById("metricTableBody");
+  tbody.innerHTML = Object.entries(comp).map(([name, item]) => {
+    const badgeClass = item.verdict === "IMPROVED" ? "badge-improved" : (item.verdict === "REGRESSED" ? "badge-regressed" : "badge-noise");
+    return `
+      <tr>
+        <td><strong>${name}</strong></td>
+        <td>${item.candidate}</td>
+        <td>${item.baseline_mean}</td>
+        <td>${item.delta > 0 ? '+' : ''}${item.delta}</td>
+        <td>${item.pct_delta > 0 ? '+' : ''}${item.pct_delta}%</td>
+        <td>±${item.noise_threshold}</td>
+        <td><span class="badge ${badgeClass}">${item.verdict_icon || ''} ${item.verdict}</span></td>
+      </tr>
+    `;
+  }).join("");
+
+  renderCandidateChart(comp);
+}
+
+function renderCandidateChart(comp) {
+  const ctx = document.getElementById('noiseChart').getContext('2d');
+  const metricKeys = ['embedding_p95', 'search_p95', 'ttft_p95', 'generation_p95', 'e2e_p95'];
+  const labels = ['Modal Embedding', 'Qdrant Search', 'TTFT (Prefill)', 'LLM Decode', 'E2E Latency'];
+  
+  const baselineMeans = metricKeys.map(k => comp[k]?.baseline_mean || 0);
+  const candidateVals = metricKeys.map(k => comp[k]?.candidate || 0);
+  const noiseUpper = metricKeys.map(k => comp[k]?.noise_band[1] || 0);
+
+  if (window.myChart) window.myChart.destroy();
+  window.myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Candidate Value',
+          data: candidateVals,
+          backgroundColor: '#58a6ff',
+          borderRadius: 4
+        },
+        {
+          label: 'Baseline Mean',
+          data: baselineMeans,
+          backgroundColor: '#6e7681',
+          borderRadius: 4
+        },
+        {
+          label: 'Noise Ceiling (+2σ)',
+          data: noiseUpper,
+          borderColor: '#f85149',
+          borderDash: [5, 5],
+          type: 'line',
+          fill: false,
+          pointRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { title: { display: true, text: 'Seconds' }, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        x: { grid: { display: false }, ticks: { color: '#e6edf3' } }
+      },
+      plugins: {
+        legend: { labels: { color: '#e6edf3' } }
+      }
+    }
+  });
+}
+
+window.onload = autoLoad;
+</script>
+</body>
+</html>

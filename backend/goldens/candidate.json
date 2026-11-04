@@ -1,0 +1,869 @@
+{
+  "metadata": {
+    "config_name": "Production v1",
+    "evaluated_at": "2026-11-04T16:19:05.695528+00:00",
+    "components": {
+      "embedding_model": "BAAI/bge-base-en-v1.5",
+      "embedding_dim": 768,
+      "chunk_max_tokens": 500,
+      "chunker_serializer": "MDTableSerializerProvider (Markdown)",
+      "llm_model": "qwen/qwen3.8-27b",
+      "llm_temperature": 1e-08,
+      "vector_db": "Qdrant Cloud",
+      "vector_search": "Hybrid (Dense DOT 768 + Sparse BM25 via RRF [1.5, 1.0])",
+      "quantization": "Scalar INT8 (quantile 0.99)",
+      "top_k": 5
+    }
+  },
+  "runs_evaluated": 5,
+  "config_diff": {
+    "chunk_max_tokens": {
+      "baseline": 500,
+      "candidate": 500,
+      "changed": false
+    },
+    "chunker_serializer": {
+      "baseline": "MDTableSerializerProvider (Markdown)",
+      "candidate": "MDTableSerializerProvider (Markdown)",
+      "changed": false
+    },
+    "embedding_dim": {
+      "baseline": 768,
+      "candidate": 768,
+      "changed": false
+    },
+    "embedding_model": {
+      "baseline": "BAAI/bge-base-en-v1.5",
+      "candidate": "BAAI/bge-base-en-v1.5",
+      "changed": false
+    },
+    "llm_model": {
+      "baseline": "openai/gpt-oss-20b",
+      "candidate": "qwen/qwen3.8-27b",
+      "changed": true
+    },
+    "llm_temperature": {
+      "baseline": 1e-08,
+      "candidate": 1e-08,
+      "changed": false
+    },
+    "quantization": {
+      "baseline": "Scalar INT8 (quantile 0.99)",
+      "candidate": "Scalar INT8 (quantile 0.99)",
+      "changed": false
+    },
+    "top_k": {
+      "baseline": 5,
+      "candidate": 5,
+      "changed": false
+    },
+    "vector_db": {
+      "baseline": "Qdrant Cloud",
+      "candidate": "Qdrant Cloud",
+      "changed": false
+    },
+    "vector_search": {
+      "baseline": "Hybrid (Dense DOT 768 + Sparse BM25 via RRF [1.5, 1.0])",
+      "candidate": "Hybrid (Dense DOT 768 + Sparse BM25 via RRF [1.5, 1.0])",
+      "changed": false
+    }
+  },
+  "baseline_referenced": {
+    "config_name": "Production v1",
+    "calibrated_at": "2026-11-04T09:57:38.252725+00:00",
+    "components": {
+      "embedding_model": "BAAI/bge-base-en-v1.5",
+      "embedding_dim": 768,
+      "chunk_max_tokens": 500,
+      "chunker_serializer": "MDTableSerializerProvider (Markdown)",
+      "llm_model": "openai/gpt-oss-20b",
+      "llm_temperature": 1e-08,
+      "vector_db": "Qdrant Cloud",
+      "vector_search": "Hybrid (Dense DOT 768 + Sparse BM25 via RRF [1.5, 1.0])",
+      "quantization": "Scalar INT8 (quantile 0.99)",
+      "top_k": 5
+    }
+  },
+  "comparison": {
+    "e2e_p50": {
+      "candidate": 23.2399,
+      "baseline_mean": 19.551,
+      "delta": 3.6889,
+      "pct_delta": 18.87,
+      "noise_threshold": 2.7655,
+      "noise_band": [
+        16.7855,
+        22.3165
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "e2e_p95": {
+      "candidate": 40.4317,
+      "baseline_mean": 27.25,
+      "delta": 13.1817,
+      "pct_delta": 48.37,
+      "noise_threshold": 8.0094,
+      "noise_band": [
+        19.2406,
+        35.2594
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "e2e_mean": {
+      "candidate": 22.7209,
+      "baseline_mean": 19.395,
+      "delta": 3.3259,
+      "pct_delta": 17.15,
+      "noise_threshold": 1.7696,
+      "noise_band": [
+        17.6253,
+        21.1646
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "ttft_p50": {
+      "candidate": 16.8957,
+      "baseline_mean": 15.8632,
+      "delta": 1.0325,
+      "pct_delta": 6.51,
+      "noise_threshold": 1.3569,
+      "noise_band": [
+        14.5063,
+        17.2201
+      ],
+      "higher_is_better": false,
+      "verdict": "NOISE",
+      "verdict_icon": "\u2248"
+    },
+    "ttft_p95": {
+      "candidate": 35.4518,
+      "baseline_mean": 21.5505,
+      "delta": 13.9013,
+      "pct_delta": 64.51,
+      "noise_threshold": 4.941,
+      "noise_band": [
+        16.6095,
+        26.4915
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "embedding_p50": {
+      "candidate": 1.1553,
+      "baseline_mean": 1.2096,
+      "delta": -0.0543,
+      "pct_delta": -4.49,
+      "noise_threshold": 0.0192,
+      "noise_band": [
+        1.1904,
+        1.2288
+      ],
+      "higher_is_better": false,
+      "verdict": "IMPROVED",
+      "verdict_icon": "\u25bc"
+    },
+    "embedding_p95": {
+      "candidate": 5.9051,
+      "baseline_mean": 5.874,
+      "delta": 0.0311,
+      "pct_delta": 0.53,
+      "noise_threshold": 19.5562,
+      "noise_band": [
+        0.0,
+        25.4301
+      ],
+      "higher_is_better": false,
+      "verdict": "NOISE",
+      "verdict_icon": "\u2248"
+    },
+    "search_p50": {
+      "candidate": 1.5213,
+      "baseline_mean": 1.3813,
+      "delta": 0.14,
+      "pct_delta": 10.14,
+      "noise_threshold": 0.0445,
+      "noise_band": [
+        1.3368,
+        1.4258
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "search_p95": {
+      "candidate": 3.8834,
+      "baseline_mean": 2.3671,
+      "delta": 1.5163,
+      "pct_delta": 64.06,
+      "noise_threshold": 1.776,
+      "noise_band": [
+        0.591,
+        4.1431
+      ],
+      "higher_is_better": false,
+      "verdict": "NOISE",
+      "verdict_icon": "\u2248"
+    },
+    "generation_p50": {
+      "candidate": 17.9329,
+      "baseline_mean": 16.4096,
+      "delta": 1.5233,
+      "pct_delta": 9.28,
+      "noise_threshold": 1.282,
+      "noise_band": [
+        15.1276,
+        17.6916
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "generation_p95": {
+      "candidate": 36.265,
+      "baseline_mean": 21.9428,
+      "delta": 14.3222,
+      "pct_delta": 65.27,
+      "noise_threshold": 4.7703,
+      "noise_band": [
+        17.1725,
+        26.7131
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "tokens_per_sec_mean": {
+      "candidate": 492.3732,
+      "baseline_mean": 1141.0625,
+      "delta": -648.6893,
+      "pct_delta": -56.85,
+      "noise_threshold": 104.6822,
+      "noise_band": [
+        1036.3803,
+        1245.7447
+      ],
+      "higher_is_better": true,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25bc"
+    },
+    "cost_usd_mean": {
+      "candidate": 0.0008,
+      "baseline_mean": 0.0004,
+      "delta": 0.0004,
+      "pct_delta": 96.41,
+      "noise_threshold": 0.0,
+      "noise_band": [
+        0.0004,
+        0.0004
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    },
+    "sla_pass_rate": {
+      "candidate": 0.0,
+      "baseline_mean": 0.0,
+      "delta": 0.0,
+      "pct_delta": 0.0,
+      "noise_threshold": 0.0,
+      "noise_band": [
+        0.0,
+        0.0
+      ],
+      "higher_is_better": true,
+      "verdict": "NOISE",
+      "verdict_icon": "\u2248"
+    },
+    "error_rate": {
+      "candidate": 5.0,
+      "baseline_mean": 0.0,
+      "delta": 5.0,
+      "pct_delta": 0.0,
+      "noise_threshold": 0.0,
+      "noise_band": [
+        0.0,
+        0.0
+      ],
+      "higher_is_better": false,
+      "verdict": "REGRESSED",
+      "verdict_icon": "\u25b2"
+    }
+  },
+  "calibrated_metrics": {
+    "e2e_p50": {
+      "mean": 23.2399,
+      "std_dev": 6.5007,
+      "cv_percent": 27.97,
+      "noise_threshold": 13.0013,
+      "noise_band_low": 10.2386,
+      "noise_band_high": 36.2412,
+      "raw_runs": [
+        18.558,
+        18.704,
+        34.297,
+        23.458,
+        21.1825
+      ]
+    },
+    "e2e_p95": {
+      "mean": 40.4317,
+      "std_dev": 2.7972,
+      "cv_percent": 6.92,
+      "noise_threshold": 5.5944,
+      "noise_band_low": 34.8373,
+      "noise_band_high": 46.0261,
+      "raw_runs": [
+        37.5699,
+        41.7847,
+        44.5762,
+        38.5545,
+        39.6731
+      ]
+    },
+    "e2e_mean": {
+      "mean": 22.7209,
+      "std_dev": 2.9519,
+      "cv_percent": 12.99,
+      "noise_threshold": 5.9038,
+      "noise_band_low": 16.8171,
+      "noise_band_high": 28.6246,
+      "raw_runs": [
+        19.2217,
+        20.572,
+        26.6231,
+        24.3815,
+        22.8061
+      ]
+    },
+    "ttft_p50": {
+      "mean": 16.8957,
+      "std_dev": 9.0434,
+      "cv_percent": 53.52,
+      "noise_threshold": 18.0868,
+      "noise_band_low": 0.0,
+      "noise_band_high": 34.9825,
+      "raw_runs": [
+        3.503,
+        15.612,
+        28.6405,
+        19.7545,
+        16.9685
+      ]
+    },
+    "ttft_p95": {
+      "mean": 35.4518,
+      "std_dev": 5.104,
+      "cv_percent": 14.4,
+      "noise_threshold": 10.2079,
+      "noise_band_low": 25.2439,
+      "noise_band_high": 45.6598,
+      "raw_runs": [
+        26.9905,
+        39.5732,
+        39.3038,
+        35.1189,
+        36.2727
+      ]
+    },
+    "embedding_p50": {
+      "mean": 1.1553,
+      "std_dev": 0.0076,
+      "cv_percent": 0.66,
+      "noise_threshold": 0.0152,
+      "noise_band_low": 1.1401,
+      "noise_band_high": 1.1705,
+      "raw_runs": [
+        1.16,
+        1.157,
+        1.1645,
+        1.148,
+        1.147
+      ]
+    },
+    "embedding_p95": {
+      "mean": 5.9051,
+      "std_dev": 9.9705,
+      "cv_percent": 168.85,
+      "noise_threshold": 19.9409,
+      "noise_band_low": 0.0,
+      "noise_band_high": 25.846,
+      "raw_runs": [
+        23.7337,
+        1.6526,
+        1.7969,
+        1.1763,
+        1.166
+      ]
+    },
+    "search_p50": {
+      "mean": 1.5213,
+      "std_dev": 0.2263,
+      "cv_percent": 14.88,
+      "noise_threshold": 0.4526,
+      "noise_band_low": 1.0687,
+      "noise_band_high": 1.9739,
+      "raw_runs": [
+        1.727,
+        1.342,
+        1.807,
+        1.3715,
+        1.359
+      ]
+    },
+    "search_p95": {
+      "mean": 3.8834,
+      "std_dev": 1.475,
+      "cv_percent": 37.98,
+      "noise_threshold": 2.95,
+      "noise_band_low": 0.9334,
+      "noise_band_high": 6.8335,
+      "raw_runs": [
+        4.2109,
+        4.5605,
+        5.2327,
+        4.0382,
+        1.3749
+      ]
+    },
+    "generation_p50": {
+      "mean": 17.9329,
+      "std_dev": 9.0748,
+      "cv_percent": 50.6,
+      "noise_threshold": 18.1495,
+      "noise_band_low": 0.0,
+      "noise_band_high": 36.0824,
+      "raw_runs": [
+        4.405,
+        16.113,
+        29.4815,
+        20.951,
+        18.714
+      ]
+    },
+    "generation_p95": {
+      "mean": 36.265,
+      "std_dev": 5.0526,
+      "cv_percent": 13.93,
+      "noise_threshold": 10.1052,
+      "noise_band_low": 26.1598,
+      "noise_band_high": 46.3703,
+      "raw_runs": [
+        27.8362,
+        40.0875,
+        40.2141,
+        36.0245,
+        37.1629
+      ]
+    },
+    "tokens_per_sec_mean": {
+      "mean": 492.3732,
+      "std_dev": 59.4991,
+      "cv_percent": 12.08,
+      "noise_threshold": 118.9983,
+      "noise_band_low": 373.375,
+      "noise_band_high": 611.3715,
+      "raw_runs": [
+        496.0286,
+        589.0,
+        469.6875,
+        478.925,
+        428.225
+      ]
+    },
+    "cost_usd_mean": {
+      "mean": 0.0008,
+      "std_dev": 0.0,
+      "cv_percent": 1.78,
+      "noise_threshold": 0.0,
+      "noise_band_low": 0.0008,
+      "noise_band_high": 0.0008,
+      "raw_runs": [
+        0.0008,
+        0.0008,
+        0.0008,
+        0.0008,
+        0.0008
+      ]
+    },
+    "sla_pass_rate": {
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "cv_percent": 0.0,
+      "noise_threshold": 0.0,
+      "noise_band_low": 0.0,
+      "noise_band_high": 0.0,
+      "raw_runs": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "error_rate": {
+      "mean": 5.0,
+      "std_dev": 6.8465,
+      "cv_percent": 136.93,
+      "noise_threshold": 13.6931,
+      "noise_band_low": 0.0,
+      "noise_band_high": 18.6931,
+      "raw_runs": [
+        12.5,
+        12.5,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "detailed_rows": [
+    {
+      "status": "SUCCESS",
+      "query": "What is machine learning and why is it needed?",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "factoid_definition"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 8441,
+        "raw_content_char_len": 7624,
+        "query_char_len": 46,
+        "total_prompt_char_len": 8591
+      },
+      "token_metrics": {
+        "prompt_tokens": 2651,
+        "completion_tokens": 397,
+        "total_tokens": 3048,
+        "tokens_per_sec": 354.0
+      },
+      "component_latencies_sec": {
+        "embedding": 1.164,
+        "retrieval_search": 1.366,
+        "total_retrieval": 2.531,
+        "prompt_compilation": 0.0001,
+        "ttft": 15.264,
+        "generation": 16.383,
+        "e2e_total": 18.914
+      },
+      "cost_usd": 0.000768,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval",
+          "TTFT",
+          "Generation",
+          "E2E Latency"
+        ]
+      },
+      "error": null
+    },
+    {
+      "status": "SUCCESS",
+      "query": "What is the Vapnik-Chervonenkis (VC) dimension and how does it measure the capacity of a hypothesis class?",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "factoid_definition"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 10163,
+        "raw_content_char_len": 9358,
+        "query_char_len": 106,
+        "total_prompt_char_len": 10373
+      },
+      "token_metrics": {
+        "prompt_tokens": 3390,
+        "completion_tokens": 353,
+        "total_tokens": 3743,
+        "tokens_per_sec": 451.7
+      },
+      "component_latencies_sec": {
+        "embedding": 1.167,
+        "retrieval_search": 1.376,
+        "total_retrieval": 2.543,
+        "prompt_compilation": 0.0001,
+        "ttft": 23.506,
+        "generation": 24.285,
+        "e2e_total": 26.829
+      },
+      "cost_usd": 0.00089,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval",
+          "TTFT",
+          "Generation",
+          "E2E Latency"
+        ]
+      },
+      "error": null
+    },
+    {
+      "status": "SUCCESS",
+      "query": "Explain Bayes' rule and how it is used in classification.",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "concept_explanation"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 5298,
+        "raw_content_char_len": 4540,
+        "query_char_len": 57,
+        "total_prompt_char_len": 5459
+      },
+      "token_metrics": {
+        "prompt_tokens": 2176,
+        "completion_tokens": 489,
+        "total_tokens": 2665,
+        "tokens_per_sec": 308.7
+      },
+      "component_latencies_sec": {
+        "embedding": 1.138,
+        "retrieval_search": 1.289,
+        "total_retrieval": 2.428,
+        "prompt_compilation": 0.0055,
+        "ttft": 17.486,
+        "generation": 19.067,
+        "e2e_total": 21.5
+      },
+      "cost_usd": 0.000729,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval",
+          "TTFT",
+          "Generation",
+          "E2E Latency"
+        ]
+      },
+      "error": null
+    },
+    {
+      "status": "SUCCESS",
+      "query": "What is Maximum Likelihood Estimation (MLE) and how are the parameters of a distribution estimated using it?",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "factoid_definition"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 4735,
+        "raw_content_char_len": 3931,
+        "query_char_len": 108,
+        "total_prompt_char_len": 4947
+      },
+      "token_metrics": {
+        "prompt_tokens": 1948,
+        "completion_tokens": 359,
+        "total_tokens": 2307,
+        "tokens_per_sec": 482.7
+      },
+      "component_latencies_sec": {
+        "embedding": 1.162,
+        "retrieval_search": 1.355,
+        "total_retrieval": 2.517,
+        "prompt_compilation": 0.0389,
+        "ttft": 24.771,
+        "generation": 25.513,
+        "e2e_total": 28.068
+      },
+      "cost_usd": 0.000605,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval",
+          "TTFT",
+          "Generation",
+          "E2E Latency"
+        ]
+      },
+      "error": null
+    },
+    {
+      "status": "SUCCESS",
+      "query": "Explain Principal Component Analysis (PCA) and how it is used for dimensionality reduction.",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "concept_explanation"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 9654,
+        "raw_content_char_len": 8850,
+        "query_char_len": 91,
+        "total_prompt_char_len": 9849
+      },
+      "token_metrics": {
+        "prompt_tokens": 3132,
+        "completion_tokens": 794,
+        "total_tokens": 3926,
+        "tokens_per_sec": 415.1
+      },
+      "component_latencies_sec": {
+        "embedding": 1.141,
+        "retrieval_search": 1.363,
+        "total_retrieval": 2.504,
+        "prompt_compilation": 0.0002,
+        "ttft": 16.451,
+        "generation": 18.361,
+        "e2e_total": 20.865
+      },
+      "cost_usd": 0.001103,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval",
+          "TTFT",
+          "Generation",
+          "E2E Latency"
+        ]
+      },
+      "error": null
+    },
+    {
+      "status": "SUCCESS",
+      "query": "Describe the k-means clustering algorithm and what it minimizes.",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "concept_explanation"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 5713,
+        "raw_content_char_len": 4965,
+        "query_char_len": 64,
+        "total_prompt_char_len": 5881
+      },
+      "token_metrics": {
+        "prompt_tokens": 2428,
+        "completion_tokens": 446,
+        "total_tokens": 2874,
+        "tokens_per_sec": 459.0
+      },
+      "component_latencies_sec": {
+        "embedding": 1.146,
+        "retrieval_search": 1.34,
+        "total_retrieval": 2.486,
+        "prompt_compilation": 0.0001,
+        "ttft": 42.466,
+        "generation": 43.436,
+        "e2e_total": 45.922
+      },
+      "cost_usd": 0.000753,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval",
+          "TTFT",
+          "Generation",
+          "E2E Latency"
+        ]
+      },
+      "error": null
+    },
+    {
+      "status": "SUCCESS",
+      "query": "What is the backpropagation algorithm in multilayer perceptrons?",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "factoid_definition"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 4857,
+        "raw_content_char_len": 4080,
+        "query_char_len": 64,
+        "total_prompt_char_len": 5025
+      },
+      "token_metrics": {
+        "prompt_tokens": 2342,
+        "completion_tokens": 268,
+        "total_tokens": 2610,
+        "tokens_per_sec": 470.8
+      },
+      "component_latencies_sec": {
+        "embedding": 1.148,
+        "retrieval_search": 1.373,
+        "total_retrieval": 2.521,
+        "prompt_compilation": 0.0001,
+        "ttft": 0.346,
+        "generation": 0.913,
+        "e2e_total": 3.434
+      },
+      "cost_usd": 0.000629,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval"
+        ]
+      },
+      "error": null
+    },
+    {
+      "status": "SUCCESS",
+      "query": "What is a Support Vector Machine (SVM) and what is the kernel trick?",
+      "workload": {
+        "size_tier": "heavy (>3k chars)",
+        "intent": "factoid_definition"
+      },
+      "context_metrics": {
+        "chunk_count": 5,
+        "context_char_len": 6376,
+        "raw_content_char_len": 5641,
+        "query_char_len": 68,
+        "total_prompt_char_len": 6548
+      },
+      "token_metrics": {
+        "prompt_tokens": 2419,
+        "completion_tokens": 388,
+        "total_tokens": 2807,
+        "tokens_per_sec": 483.8
+      },
+      "component_latencies_sec": {
+        "embedding": 1.134,
+        "retrieval_search": 0.572,
+        "total_retrieval": 1.706,
+        "prompt_compilation": 0.0002,
+        "ttft": 14.411,
+        "generation": 15.211,
+        "e2e_total": 16.917
+      },
+      "cost_usd": 0.000717,
+      "budget": {
+        "passed": false,
+        "breaches": [
+          "Embedding",
+          "Qdrant Search",
+          "Total Retrieval",
+          "TTFT",
+          "Generation",
+          "E2E Latency"
+        ]
+      },
+      "error": null
+    }
+  ]
+}

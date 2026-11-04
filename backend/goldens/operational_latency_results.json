@@ -1,0 +1,338 @@
+[
+  {
+    "status": "SUCCESS",
+    "query": "What is machine learning and why is it needed?",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "factoid_definition"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 8441,
+      "raw_content_char_len": 7624,
+      "query_char_len": 46,
+      "total_prompt_char_len": 8591
+    },
+    "token_metrics": {
+      "prompt_tokens": 2613,
+      "completion_tokens": 464,
+      "total_tokens": 3077,
+      "tokens_per_sec": 1027.8
+    },
+    "component_latencies_sec": {
+      "embedding": 14.029,
+      "retrieval_search": 2.248,
+      "total_retrieval": 16.277,
+      "prompt_compilation": 0.0001,
+      "ttft": 1.618,
+      "generation": 2.069,
+      "e2e_total": 18.346
+    },
+    "cost_usd": 0.000401,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (14.03s > 0.80s)",
+        "Qdrant (2.25s > 0.40s)",
+        "Total Retrieval (16.28s > 1.20s)",
+        "TTFT (1.62s > 1.00s)",
+        "E2E Latency (18.35s > 3.50s)"
+      ]
+    },
+    "error": null
+  },
+  {
+    "status": "SUCCESS",
+    "query": "What is the Vapnik-Chervonenkis (VC) dimension and how does it measure the capacity of a hypothesis class?",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "factoid_definition"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 10163,
+      "raw_content_char_len": 9358,
+      "query_char_len": 106,
+      "total_prompt_char_len": 10373
+    },
+    "token_metrics": {
+      "prompt_tokens": 3331,
+      "completion_tokens": 246,
+      "total_tokens": 3577,
+      "tokens_per_sec": 1433.2
+    },
+    "component_latencies_sec": {
+      "embedding": 2.098,
+      "retrieval_search": 1.779,
+      "total_retrieval": 3.878,
+      "prompt_compilation": 0.0002,
+      "ttft": 0.927,
+      "generation": 1.098,
+      "e2e_total": 4.975
+    },
+    "cost_usd": 0.000407,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (2.10s > 0.80s)",
+        "Qdrant (1.78s > 0.40s)",
+        "Total Retrieval (3.88s > 1.20s)",
+        "E2E Latency (4.98s > 3.50s)"
+      ]
+    },
+    "error": null
+  },
+  {
+    "status": "SUCCESS",
+    "query": "Explain Bayes' rule and how it is used in classification.",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "concept_explanation"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 5298,
+      "raw_content_char_len": 4540,
+      "query_char_len": 57,
+      "total_prompt_char_len": 5459
+    },
+    "token_metrics": {
+      "prompt_tokens": 2143,
+      "completion_tokens": 694,
+      "total_tokens": 2837,
+      "tokens_per_sec": 1013.8
+    },
+    "component_latencies_sec": {
+      "embedding": 1.263,
+      "retrieval_search": 0.916,
+      "total_retrieval": 2.179,
+      "prompt_compilation": 0.0001,
+      "ttft": 0.752,
+      "generation": 1.436,
+      "e2e_total": 3.615
+    },
+    "cost_usd": 0.000423,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (1.26s > 0.80s)",
+        "Qdrant (0.92s > 0.40s)",
+        "Total Retrieval (2.18s > 1.20s)",
+        "E2E Latency (3.62s > 3.50s)"
+      ]
+    },
+    "error": null
+  },
+  {
+    "status": "SUCCESS",
+    "query": "What is Maximum Likelihood Estimation (MLE) and how are the parameters of a distribution estimated using it?",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "factoid_definition"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 4735,
+      "raw_content_char_len": 3931,
+      "query_char_len": 108,
+      "total_prompt_char_len": 4947
+    },
+    "token_metrics": {
+      "prompt_tokens": 1919,
+      "completion_tokens": 299,
+      "total_tokens": 2218,
+      "tokens_per_sec": 965.2
+    },
+    "component_latencies_sec": {
+      "embedding": 1.172,
+      "retrieval_search": 0.953,
+      "total_retrieval": 2.125,
+      "prompt_compilation": 0.0001,
+      "ttft": 7.121,
+      "generation": 7.429,
+      "e2e_total": 9.555
+    },
+    "cost_usd": 0.000282,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (1.17s > 0.80s)",
+        "Qdrant (0.95s > 0.40s)",
+        "Total Retrieval (2.12s > 1.20s)",
+        "TTFT (7.12s > 1.00s)",
+        "Generation (7.43s > 2.50s)",
+        "E2E Latency (9.55s > 3.50s)"
+      ]
+    },
+    "error": null
+  },
+  {
+    "status": "SUCCESS",
+    "query": "Explain Principal Component Analysis (PCA) and how it is used for dimensionality reduction.",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "concept_explanation"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 9654,
+      "raw_content_char_len": 8850,
+      "query_char_len": 91,
+      "total_prompt_char_len": 9849
+    },
+    "token_metrics": {
+      "prompt_tokens": 3068,
+      "completion_tokens": 679,
+      "total_tokens": 3747,
+      "tokens_per_sec": 1229.6
+    },
+    "component_latencies_sec": {
+      "embedding": 1.914,
+      "retrieval_search": 2.517,
+      "total_retrieval": 4.431,
+      "prompt_compilation": 0.0001,
+      "ttft": 19.612,
+      "generation": 20.163,
+      "e2e_total": 24.595
+    },
+    "cost_usd": 0.00051,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (1.91s > 0.80s)",
+        "Qdrant (2.52s > 0.40s)",
+        "Total Retrieval (4.43s > 1.20s)",
+        "TTFT (19.61s > 1.00s)",
+        "Generation (20.16s > 2.50s)",
+        "E2E Latency (24.59s > 3.50s)"
+      ]
+    },
+    "error": null
+  },
+  {
+    "status": "SUCCESS",
+    "query": "Describe the k-means clustering algorithm and what it minimizes.",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "concept_explanation"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 5713,
+      "raw_content_char_len": 4965,
+      "query_char_len": 64,
+      "total_prompt_char_len": 5881
+    },
+    "token_metrics": {
+      "prompt_tokens": 2346,
+      "completion_tokens": 585,
+      "total_tokens": 2931,
+      "tokens_per_sec": 1241.5
+    },
+    "component_latencies_sec": {
+      "embedding": 1.173,
+      "retrieval_search": 5.229,
+      "total_retrieval": 6.402,
+      "prompt_compilation": 0.0001,
+      "ttft": 1.989,
+      "generation": 2.459,
+      "e2e_total": 8.862
+    },
+    "cost_usd": 0.00041,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (1.17s > 0.80s)",
+        "Qdrant (5.23s > 0.40s)",
+        "Total Retrieval (6.40s > 1.20s)",
+        "TTFT (1.99s > 1.00s)",
+        "E2E Latency (8.86s > 3.50s)"
+      ]
+    },
+    "error": null
+  },
+  {
+    "status": "SUCCESS",
+    "query": "What is the backpropagation algorithm in multilayer perceptrons?",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "factoid_definition"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 4857,
+      "raw_content_char_len": 4080,
+      "query_char_len": 64,
+      "total_prompt_char_len": 5025
+    },
+    "token_metrics": {
+      "prompt_tokens": 2168,
+      "completion_tokens": 401,
+      "total_tokens": 2569,
+      "tokens_per_sec": 938.1
+    },
+    "component_latencies_sec": {
+      "embedding": 1.888,
+      "retrieval_search": 3.062,
+      "total_retrieval": 4.95,
+      "prompt_compilation": 0.0001,
+      "ttft": 0.482,
+      "generation": 0.908,
+      "e2e_total": 5.858
+    },
+    "cost_usd": 0.000337,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (1.89s > 0.80s)",
+        "Qdrant (3.06s > 0.40s)",
+        "Total Retrieval (4.95s > 1.20s)",
+        "E2E Latency (5.86s > 3.50s)"
+      ]
+    },
+    "error": null
+  },
+  {
+    "status": "SUCCESS",
+    "query": "What is a Support Vector Machine (SVM) and what is the kernel trick?",
+    "workload": {
+      "size_tier": "heavy (>3k chars)",
+      "intent": "factoid_definition"
+    },
+    "context_metrics": {
+      "chunk_count": 5,
+      "context_char_len": 6376,
+      "raw_content_char_len": 5641,
+      "query_char_len": 68,
+      "total_prompt_char_len": 6548
+    },
+    "token_metrics": {
+      "prompt_tokens": 2355,
+      "completion_tokens": 443,
+      "total_tokens": 2798,
+      "tokens_per_sec": 1398.6
+    },
+    "component_latencies_sec": {
+      "embedding": 1.49,
+      "retrieval_search": 0.63,
+      "total_retrieval": 2.12,
+      "prompt_compilation": 0.0001,
+      "ttft": 10.223,
+      "generation": 10.539,
+      "e2e_total": 12.66
+    },
+    "cost_usd": 0.000368,
+    "budget": {
+      "passed": false,
+      "breaches": [
+        "Embedding (1.49s > 0.80s)",
+        "Qdrant (0.63s > 0.40s)",
+        "Total Retrieval (2.12s > 1.20s)",
+        "TTFT (10.22s > 1.00s)",
+        "Generation (10.54s > 2.50s)",
+        "E2E Latency (12.66s > 3.50s)"
+      ]
+    },
+    "error": null
+  }
+]

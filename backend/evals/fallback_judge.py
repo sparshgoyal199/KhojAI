@@ -33,8 +33,7 @@ GROQ_URL = "https://api.groq.com/openai/v1"
 # gpt-oss-safeguard-20b (safety classifier, only 3 RPM / 2K TPM).
 GROQ_MODELS = [
     ("openai/gpt-oss-120b", {"reasoning_effort": "low"}),
-    ("qwen/qwen3.8-27b", {}),
-    ("openai/gpt-oss-20b", {"reasoning_effort": "low"}),
+    ("qwen/qwen3.8-27b", {})
 ]
 
 
