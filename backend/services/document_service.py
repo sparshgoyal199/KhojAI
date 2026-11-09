@@ -21,7 +21,7 @@ def validate_document(doc: ConversionResult):
     """
     header_texts = []
     threshold = 0.08
-    min_repeat = 4
+    min_repeat = 2
     for item, _ in doc.iterate_items():
         if item.label == DocItemLabel.SECTION_HEADER:
             header_texts.append(item.text.strip())
@@ -66,47 +66,48 @@ def remove_false_headers_from_doc(doc, repeating_headers: set, threshold: float 
 
     # ── Step 2: Re-parent children of each false header ─────────────────────
     for header in false_headers:
+        print("I should be running")
         if not header.children:
             continue # no children to re-parent, skip
 
         # Find the parent node of this false header
-        parent_node = header.parent.resolve(doc=doc)
+        # parent_node = header.parent.resolve(doc=doc)
+        # print("is it running seriously")
+        # # Find the index of this false header among its parent's children
+        # header_ref = header.get_ref()
+        # header_index = None
+        # for i, child_ref in enumerate(parent_node.children):
+        #     if child_ref.cref == header_ref.cref:
+        #         header_index = i
+        #         break
 
-        # Find the index of this false header among its parent's children
-        header_ref = header.get_ref()
-        header_index = None
-        for i, child_ref in enumerate(parent_node.children):
-            if child_ref.cref == header_ref.cref:
-                header_index = i
-                break
+        # if header_index is None:
+        #     log.warning(f"Could not find header '{header.text.strip()}' in parent's children, skipping re-parent.")
+        #     continue
 
-        if header_index is None:
-            log.warning(f"Could not find header '{header.text.strip()}' in parent's children, skipping re-parent.")
-            continue
+        # # Walk backwards through siblings to find the nearest real heading
+        # real_heading = None
+        # for i in range(header_index - 1, -1, -1):
+        #     sibling = parent_node.children[i].resolve(doc)
+        #     if (isinstance(sibling, SectionHeaderItem)
+        #             and sibling.self_ref not in false_header_refs):
+        #         real_heading = sibling
+        #         break
 
-        # Walk backwards through siblings to find the nearest real heading
-        real_heading = None
-        for i in range(header_index - 1, -1, -1):
-            sibling = parent_node.children[i].resolve(doc)
-            if (isinstance(sibling, SectionHeaderItem)
-                    and sibling.self_ref not in false_header_refs):
-                real_heading = sibling
-                break
-
-        if real_heading:
-            # Move each child of the false header to the real heading
-            for child_ref in list(header.children): # copy list since _move_subtree modifies it
-                child = child_ref.resolve(doc)
-                doc._move_subtree(old_subroot=child, new_subroot=real_heading)
-            log.info(f"Re-parented children of '{header.text.strip()}' → under '{real_heading.text.strip()}'")
-        else:
-            # No preceding real heading found — shift children up to the parent level
-            log.info(f"No preceding heading found for '{header.text.strip()}', shifting children up.")
-            doc._shift_up(old_subroot=header)
-            # _shift_up already removes the header from its parent's children,
-            # so we should NOT delete it again via delete_items.
-            # Remove it from our false_headers list to avoid double-removal.
-            false_header_refs.discard(header.self_ref)
+        # if real_heading:
+        #     # Move each child of the false header to the real heading
+        #     for child_ref in list(header.children): # copy list since _move_subtree modifies it
+        #         child = child_ref.resolve(doc)
+        #         doc._move_subtree(old_subroot=child, new_subroot=real_heading)
+        #     log.info(f"Re-parented children of '{header.text.strip()}' → under '{real_heading.text.strip()}'")
+        # else:
+        #     # No preceding real heading found — shift children up to the parent level
+        #     log.info(f"No preceding heading found for '{header.text.strip()}', shifting children up.")
+        #     doc._shift_up(old_subroot=header)
+        #     # _shift_up already removes the header from its parent's children,
+        #     # so we should NOT delete it again via delete_items.
+        #     # Remove it from our false_headers list to avoid double-removal.
+        #     false_header_refs.discard(header.self_ref)
 
     # ── Step 3: Delete the now-childless false headers ──────────────────────
     # Only delete headers that weren't already removed by _shift_up

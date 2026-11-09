@@ -4,7 +4,7 @@ from models.response_models import QueryResponse
 from pipeline.retrieval_workflow import get_graph
 from dependencies import get_current_user
 from pipeline.prompt import system_prompt
-from langchain_core.messages import SystemMessage, AIMessage
+from langchain_core.messages import SystemMessage, AIMessage, HumanMessage
 from fastapi.responses import StreamingResponse
 import json
 from services.chat_services import save_message
@@ -14,16 +14,18 @@ from services.chat_services import get_or_create_session
 from services.pdf_service import make_pdf_id_to_str
 query_router = APIRouter()
 
+
 @query_router.post("/pdfs/{pdf_id}/query")
 async def query_document(query: QueryRequest, pdf_id: str, current_user: dict = Depends(get_current_user)):
     try:
         pdf_id = make_pdf_id_to_str(pdf_id)
         pdf = await get_owned_pdf_or_403(pdf_id, current_user["id"])
         session = await get_or_create_session(pdf_id, current_user["id"]) 
+        thread_id = session["langgraph_thread_id"]
         retrieval_workflow = get_graph() 
-        config = {"configurable": {"thread_id": session["langgraph_thread_id"]}}
+        config = {"configurable": {"thread_id": thread_id}}
         # initial_state = {"pdf_id": pdf_id, "query": query.query, "messages": [SystemMessage(content=system_prompt)]}
-        initial_state = {"pdf_id": pdf_id, "query": query.query}
+        initial_state = {"messages": [HumanMessage(query.query)], "pdf_id": pdf_id}
         await save_message(session["id"], "user", query.query)
         async def ai_only_stream():
             full_response = ""

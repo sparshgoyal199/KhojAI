@@ -17,6 +17,7 @@ llm = ChatGroq(
     temperature=0,
     reasoning_effort= "low"
 )
+
 from langchain_mistralai import ChatMistralAI
 
 # llm = ChatMistralAI(

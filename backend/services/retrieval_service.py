@@ -1,7 +1,7 @@
 from qdrant_client import models
 from services.vector_service import retrieve_results
 from fastapi.responses import StreamingResponse
-from core.llm import groq_client, llm
+from core.llm import groq_client
 import json
 
 def prompt_formatter(query: str, 
@@ -36,7 +36,10 @@ def get_past_messages(messages: list):
     return history_text
 
 async def retrieve__llm_response(messages: list) -> StreamingResponse:
-    response = await llm.ainvoke(messages)
+    from core.llm import groq_client, llm
+    from pipeline.retrieval_workflow import tools
+    llm_with_tools = llm.bind_tools(tools=tools)
+    response = await llm_with_tools.ainvoke(messages)
     return response
 
 async def retrieve_relevant_chunks(pdf_id: str, embedded_query: list[float], original_query: str):
